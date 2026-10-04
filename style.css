@@ -218,3 +218,45 @@ footer {
     }
 
 }
+
+/* SCROLL ANIMATIONS */
+
+.section,
+.tickets {
+    opacity: 0;
+    transform: translateY(50px);
+    transition: opacity 0.8s ease, transform 0.8s ease;
+}
+
+.section.show,
+.tickets.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Cards appear one after another */
+
+.card {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+.card.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.card:nth-child(2) {
+    transition-delay: 0.15s;
+}
+
+.card:nth-child(3) {
+    transition-delay: 0.3s;
+}
+
+/* Smooth hero movement */
+
+.hero-content {
+    transition: transform 0.2s ease-out;
+}
