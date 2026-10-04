@@ -6,11 +6,15 @@ const animatedCards = document.querySelectorAll(".card");
 
 const observer = new IntersectionObserver(
     (entries) => {
+
         entries.forEach((entry) => {
+
             if (entry.isIntersecting) {
                 entry.target.classList.add("show");
             }
+
         });
+
     },
     {
         threshold: 0.15
@@ -26,23 +30,81 @@ animatedCards.forEach((card) => {
 });
 
 
-// Subtle parallax effect while scrolling
+// =========================
+// TREASURE MAP ANIMATION
+// =========================
 
-window.addEventListener("scroll", () => {
+const trail = document.querySelector(".trail-progress");
 
-    const heroContent = document.querySelector(".hero-content");
+const checkpoints = document.querySelectorAll(".checkpoint");
 
-    if (!heroContent) return;
-
-    const scrollPosition = window.scrollY;
-
-    heroContent.style.transform =
-        `translateY(${scrollPosition * 0.15}px)`;
-});
+const treasure = document.querySelector(".treasure");
 
 
-// Ticket button
+function updateTreasureMap() {
+
+    const map = document.querySelector(".treasure-map");
+
+    if (!map || !trail) return;
+
+    const rect = map.getBoundingClientRect();
+
+    const windowHeight = window.innerHeight;
+
+    const mapHeight = rect.height;
+
+    const progress =
+        (windowHeight - rect.top) /
+        (windowHeight + mapHeight);
+
+    const clampedProgress =
+        Math.max(0, Math.min(1, progress));
+
+    const pathLength = 2500;
+
+    trail.style.strokeDashoffset =
+        pathLength - (pathLength * clampedProgress);
+
+
+    // Reveal checkpoints
+
+    checkpoints.forEach((checkpoint, index) => {
+
+        const revealPoint =
+            0.20 + index * 0.23;
+
+        if (clampedProgress > revealPoint) {
+            checkpoint.classList.add("visible");
+        }
+
+    });
+
+
+    // Reveal treasure near the end
+
+    if (clampedProgress > 0.82) {
+        treasure.classList.add("visible");
+    }
+
+}
+
+window.addEventListener(
+    "scroll",
+    updateTreasureMap,
+    { passive: true }
+);
+
+updateTreasureMap();
+
+
+// =========================
+// TICKET
+// =========================
 
 function buyTicket() {
-    alert("Ticket booking will be available soon!");
+
+    alert(
+        "Ticket booking will be available soon!"
+    );
+
 }
